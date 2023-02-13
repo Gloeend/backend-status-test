@@ -33,7 +33,7 @@ class OrderService
     self::pdf($data);
   }
 
-  public static function pdf($data)
+  private static function pdf($data)
   {
     view()->share('pdf', $data);
     $pdf = PDF::loadView('pdf', compact('data'));
@@ -45,9 +45,9 @@ class OrderService
     self::sendDocument($path);
   }
 
-  public static function sendDocument($file){
-    $chat = '-813050945';
-    $apiKey = '5925961448:AAFfjo3NvBcKyZOpD4o5fxn6Xl8U5wfio1A';     
+  private static function sendDocument($file){
+    $chat = getenv('TELEGRAM_CHAT');
+    $apiKey = getenv('TELEGRAM_TOKEN');  
     $url =  "https://api.telegram.org/bot" . $apiKey . "/sendDocument";
     $fields = [
       'chat_id' => $chat,
@@ -59,8 +59,7 @@ class OrderService
      curl_setopt($curl, CURLOPT_URL, $url);
      curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
      curl_setopt($curl, CURLOPT_POSTFIELDS, $fields);
-     $fileSendStatus = curl_exec($curl);
-     var_dump($fileSendStatus);
+     curl_exec($curl);
      curl_close($curl);
  }
 }
