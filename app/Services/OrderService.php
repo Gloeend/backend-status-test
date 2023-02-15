@@ -50,7 +50,7 @@ class OrderService
     $content = $pdf->download('order.pdf')->getOriginalContent();
     Storage::put('order.pdf', $content);
     $url = Storage::url('app/order.pdf');
-    $path = base_path() . $url;
+    return base_path() . $url;
   }
 
   /*
